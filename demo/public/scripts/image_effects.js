@@ -1,0 +1,4 @@
+var imageEffects = {
+	smoothing: {},
+	sharping: {}
+}

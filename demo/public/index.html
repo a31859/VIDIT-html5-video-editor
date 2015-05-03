@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+	 	<meta charset="utf-8">
+
+	 	<title>Demo</title>
+	 	<meta name="description" content="Video Editor Demo">
+	 	<meta name="author" content="Délio Amaral">
+
+	 	<link rel="stylesheet" href="css/styles.css">
+
+		<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<h1>Demo</h1>
+
+		<form method="post" action="#" onsubmit="return setProject(this)">
+			<label><strong>Project Name:</strong></label><input id="pname" name="pname" type="text" />
+			<br />
+			<label><strong>Resolution</strong></label>
+			<br />
+			<label>Width:</label><input id="pwidth" name="pwidth" type="number" />
+			<br />
+			<label>Height:</label><input id="pheight" name="pheight" type="number" />
+			<br />
+			<input type="reset" value="Reset" /> <input type="submit" value="Set" />
+		</form>
+
+		<input type="file" id="openfiles" name="openfiles" onchange="listFiles(this)" multiple class="hide" />
+		<button class="hide" id="openfilesButton" name="openfilesButton" onclick="openFiles()">open files</button>
+
+		<div id="content" name="content"></div>
+
+
+		<script src="scripts/app.js"></script>
+	</body>
+</html>

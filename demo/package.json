@@ -1,0 +1,14 @@
+{
+  "name": "html5-video-editor-demo",
+  "version": "1.0.0",
+  "description": "An HTML5 video editor demo app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Délio Amaral <a31859@alunos.isel.pt>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
+}
