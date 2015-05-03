@@ -20,17 +20,21 @@ var imageEffects = {
 			gray: function() {}
 		}
 	},
+
 	distort: {
 		fisheye: function() {}
 	},
+
 	keying: {
 		chromakey: function() {},
 		matte: function() {}
 	},
+
 	noise_grain: {
 		remove_noise: function() {},
 		add_noise: function() {}
 	},
+
 	transform: {
 		zoom: function() {},
 		resize: function() {},
@@ -38,6 +42,7 @@ var imageEffects = {
 		crop: function() {},
 		invert: function() {}
 	},
+	
 	transition: {
 		dissolve: function() {},
 		wipe: function() {},
