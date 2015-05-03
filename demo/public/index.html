@@ -33,9 +33,12 @@
 		<input type="file" id="openfiles" name="openfiles" onchange="listFiles(this)" multiple class="hide" />
 		<button class="hide" id="openfilesButton" name="openfilesButton" onclick="openFiles()">open files</button>
 
-		<div id="content" name="content"></div>
+		<div id="content" name="content">
+			<ul id="preview" name="preview"></ul>
+			<div class="timeline" id="timeline" name="timeline"></div>
+		</div>
 
-
+		<script src="scripts/modernizr-latest.js"></script>
 		<script src="scripts/image_effects.js"></script>
 		<script src="scripts/app.js"></script>
 	</body>
