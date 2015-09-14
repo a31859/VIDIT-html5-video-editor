@@ -9,6 +9,10 @@
   "author": "Délio Amaral <a31859@alunos.isel.pt>",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.12.3"
+    "express": "4.10.8",
+    "fs-extra": "0.18.4",
+    "multer": "0.1.8",
+    "nodemailer": "1.4.0",
+    "request": "2.61.0"
   }
 }

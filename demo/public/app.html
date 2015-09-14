@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="57x57" href="/logos/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/logos/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/logos/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/logos/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/logos/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/logos/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/logos/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/logos/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/logos/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/logos/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/logos/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/logos/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/logos/favicon-16x16.png">
+    <link rel="manifest" href="/logos/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/logos/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <title>Vidit</title>
+    <meta name="description" content="HTML5 Video Editor">
+    <meta name="author" content="Délio Amaral">
+    <link rel="stylesheet" href="css/bootstrap_slate.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="app.html">
+                    <div class="logo">
+                        V
+                    </div>
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse navbar-left">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown">File</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="location.reload();"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;&nbsp; New Project </a>
+                            </li>
+                            <li class="disabled" id="openfilesButton" role="presentation">
+                                <a role="menuitem" tabindex="-1" onclick="openFiles()"><span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;&nbsp;Open Media Files </a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="closeWindow();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;  Exit </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Render</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                            <li role="presentation" id="renderButton" class="disabled"><a role="menuitem" tabindex="-1" onclick="checkIfCanRender()"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;&nbsp; Render &#38; Upload </a>
+                                <li role="presentation" id="uploadButton" class="disabled"><a role="menuitem" tabindex="-1" onclick="checkIfCanUpload()"><span class="glyphicon glyphicon-open"></span>&nbsp;&nbsp;&nbsp; Upload </a>
+                                </li>
+                        </ul>
+                        </li>
+                        <li><a data-toggle="modal" data-target="#about">About</a>
+                        </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myAboutLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myAboutLabel">About</h4>
+                </div>
+                <div class="modal-body">
+                    This is a web application created by:
+                    <br />Délio Amaral, 31859
+                    <br />Instituto Superior de Engenharia de Lisboa, Portugal, <a href="https://goo.gl/maps/xRFwT" target="_blank">Google Maps</a>
+                </div>
+                <!--<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Demo</h1>
+            <form class="form-horizontal" method="post" action="#" onsubmit="return setProject(this)">
+                <fieldset>
+                    <!-- Form Name -->
+                    <legend>Project Setup</legend>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="pname"><strong>Project Name:</strong></label>
+                        <div class="col-md-4">
+                            <input id="pname" name="pname" type="text" placeholder="MyProject" class="form-control input-md" />
+                            <span class="help-block">the project name</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="email"><strong>Your Email:</strong></label>
+                        <div class="col-md-4">
+                            <input id="email" name="email" type="email" value="a31859@alunos.isel.pt" placeholder="placeholder" class="form-control input-md" />
+                            <span class="help-block">your email to send the result video</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"><strong>Resolution</strong></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="pwidth">Width:</label>
+                        <div class="col-md-4">
+                            <input id="pwidth" name="pwidth" type="number" placeholder="1280" class="form-control input-md" />
+                            <span class="help-block">the video width</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="pheight">Height:</label>
+                        <div class="col-md-4">
+                            <input id="pheight" name="pheight" type="number" placeholder="720" class="form-control input-md" />
+                            <span class="help-block">the video height</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-8">
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn btn-success">Set</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <input class="hide" type="file" id="openfiles" name="openfiles" onchange="listFiles(this)" multiple />
+            <br />
+        </div>
+        <div class="top-margin">
+            <div class="hide" id="content" name="content">
+                <div class="container">
+                    <h1 id="title">Untitled</h1>
+                    <ul id="preview" name="preview"></ul>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#video-timeline" role="tab" data-toggle="tab">Video</a>
+                            </li>
+                            <li><a href="#image-timeline" role="tab" data-toggle="tab">Image</a>
+                            </li>
+                            <li><a href="#sound-timeline" role="tab" data-toggle="tab">Sound</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="video-timeline"></div>
+                            <div class="tab-pane" id="image-timeline"></div>
+                            <div class="tab-pane" id="sound-timeline"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <canvas id="canvas" style="background-color: rgba(0, 0, 0, 1);">
+                            Canvas não suportado neste browser.
+                        </canvas>
+                        <br />
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" onclick="playAll()">
+                                <span class="glyphicon glyphicon-play"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="stopAll()">
+                                <span class="glyphicon glyphicon-stop"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+    <!-- Bootstrap core JavaScript
+            ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/jquery.noty.packaged.min.js"></script>
+    <script src="scripts/sweetalert.min.js"></script>
+    <script src="scripts/modernizr-latest.js"></script>
+    <script src="scripts/image_effects.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+
+</html>

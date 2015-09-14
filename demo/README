@@ -1,0 +1,39 @@
+
+==========================================================================
+CLOUDPT CODE SNIPPETS
+USING NODEJS
+==========================================================================
+By Meocloud Team (developers@meocloud.pt)
+
+This code snippet uses modules: oauth, step, colors and optimist
+Some snippets use optimist for arg handling
+
+Installation
+============
+npm install oauth step colors optimist
+
+Notes
+=====
+This sample uses the OAuth out-of-band authentication method but you
+can easily change it to use a callback URL.
+When using oob you have to manually enter a PIN to obtain your tokens
+
+How to use this snippet
+=======================
+
+1. Edit auth.js and fill ONLY these two variables. Leave the other two unchanged
+key    = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
+2. run node login.js
+You'll get a link which you have to enter in your browser. After authorization you will be presented with a PIN that you have to enter in the prompt.
+The result is an access_token and a token_secret
+
+3. Edit auth.js again and now fill the other two variables with the values obtained from step 2
+access_token = "xxxxxxxxxxxxxxxxxxxx";
+token_secret = "xxxxxxxxxxxxxxxxxxxx";
+
+4. Try any of the sample methods presented (delta, list, media, createFolder)
+
+
+If you have questions, send them to developers@meocloud.pt

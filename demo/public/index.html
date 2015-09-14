@@ -1,45 +1,57 @@
-<!doctype html>
+<html>
 
-<html lang="en">
-	<head>
-	 	<meta charset="utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="css/bootstrap_slate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="57x57" href="/logos/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/logos/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/logos/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/logos/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/logos/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/logos/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/logos/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/logos/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/logos/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/logos/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/logos/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/logos/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/logos/favicon-16x16.png">
+    <link rel="manifest" href="/logos/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/logos/ms-icon-144x144.png">
+    <title>Vidit - HTML5 Video Editor</title>
+</head>
 
-	 	<title>Demo</title>
-	 	<meta name="description" content="Video Editor Demo">
-	 	<meta name="author" content="Délio Amaral">
+<body class="landing">
+    <div class="container text-center">
+        <noscript>
+            <style type="text/css">
+                .appButton {
+                    display: none;
+                }
+            </style>
+            <p class="bg-danger">
+                <br />
+                YOU HAVE JAVASCRIPT <strong>DISABLED</strong> PLEASE <strong>ENABLE</strong> JAVASCRIPT AND REFRESH PAGE.
+                <br />
+                <br />
+            </p>
+        </noscript>
+        <div class="logo2">V</div>
+        <div class="landing_main">
+            <h1>Welcome to VIDIT</h1>
+            <p>To RUN click the button bellow.</p>
+            <p><a class="btn btn-default btn-lg appButton" href="app.html" role="button" target="_blank">RUN APP</a>
+            </p>
+        </div>
+    </div>
 
-	 	<link rel="stylesheet" href="css/styles.css">
+    <!-- Bootstrap core JavaScript
+            ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+</body>
 
-		<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-	</head>
-
-	<body>
-		<h1>Demo</h1>
-
-		<form method="post" action="#" onsubmit="return setProject(this)">
-			<label><strong>Project Name:</strong></label><input id="pname" name="pname" type="text" />
-			<br />
-			<label><strong>Resolution</strong></label>
-			<br />
-			<label>Width:</label><input id="pwidth" name="pwidth" type="number" />
-			<br />
-			<label>Height:</label><input id="pheight" name="pheight" type="number" />
-			<br />
-			<input type="reset" value="Reset" /> <input type="submit" value="Set" />
-		</form>
-
-		<input type="file" id="openfiles" name="openfiles" onchange="listFiles(this)" multiple class="hide" />
-		<button class="hide" id="openfilesButton" name="openfilesButton" onclick="openFiles()">open files</button>
-
-		<div id="content" name="content">
-			<ul id="preview" name="preview"></ul>
-			<div class="timeline" id="timeline" name="timeline"></div>
-		</div>
-
-		<script src="scripts/modernizr-latest.js"></script>
-		<script src="scripts/image_effects.js"></script>
-		<script src="scripts/app.js"></script>
-	</body>
 </html>
