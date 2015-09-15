@@ -5,7 +5,6 @@ var crypto = require("crypto");
 var fs = require("fs-extra");
 var cp_execF = require('child_process').execFile,
     cp_exec = require('child_process').exec,
-    //readline = require('readline'),
     child,
     child_audio,
     numFiles;
@@ -14,11 +13,6 @@ require('./email_auth.js');
 var NodeCloudPT = require('./NodeCloudPT.js');
 var nodemailer = require('nodemailer');
 var colors = require('colors');
-
-// var rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
 
 var app = express();
 var port = 3000;
@@ -34,9 +28,7 @@ app.use(multer({
         return dest + req.body.projectID;
     },
     rename: function(fieldname, filename) {
-        // var name = filename.split('.')[0];
-        // var ext = filename.split('.')[1];
-        return filename; //+ "_" + Date.now() + ext;
+        return filename;
     },
     onFileUploadStart: function(file) {
         console.log(file.originalname + ' is starting ...');
@@ -59,7 +51,6 @@ app.post('/render', function(req, res) {
     var projectID = req.body.projectID;
     var email = req.body.email;
     var resolution = req.body.resolution;
-    /*var images = req.body.images;*/
     var webAudioSuported = req.body.webaudio;
     var ext = req.body.audioExt;
     var audiofile = '/audiofile.' + ext;
@@ -87,11 +78,6 @@ app.post('/render', function(req, res) {
                     }
                 });
                 var transporter = nodemailer.createTransport({
-                    // service: 'Gmail',
-                    // auth: {
-                    //     user: '',
-                    //     pass: ''
-                    // }
                     host: 'smtp-mail.outlook.com',
                     port: 587,
                     auth: auth
@@ -114,9 +100,6 @@ app.post('/render', function(req, res) {
                                 var url = data.url;
                                 var expires = data.expires;
 
-                                // NB! No need to recreate the transporter object. You can use
-                                // the same transporter object for all e-mails
-
                                 // setup e-mail data with unicode symbols
                                 var mailOptions = {
                                     from: 'VIDIT <theguide@outlook.pt>', // sender address
@@ -137,9 +120,6 @@ app.post('/render', function(req, res) {
                             });
                         });
                     } else {
-                        // NB! No need to recreate the transporter object. You can use
-                        // the same transporter object for all e-mails
-
                         // setup e-mail data with unicode symbols
                         var mailOptions = {
                             from: 'VIDIT <theguide@outlook.pt>', // sender address
@@ -188,14 +168,6 @@ app.post('/render', function(req, res) {
     }
 
     if (done && totalImages == currImageNum) {
-        /*for (var i = 0; i < images.length; i++) {
-            var filedata = images[i].split('####');
-            var filepath = destination + "/" + filedata[0] + ".jpg";
-            var base64Data = filedata[1].replace(/^data:image\/jpeg;base64,/, "");
-            fs.writeFile(filepath, base64Data, 'base64', function(err) {
-                console.log(err);
-            });
-        }*/
         if (webAudioSuported == 'false') {
             console.log("No support for web audio api.");
             console.log('----- making audio -----'.bold.cyan);
@@ -216,11 +188,7 @@ app.post('/render', function(req, res) {
                 if (data.toString().match(/\[Y\/N\]/ig)) {
                     child_audio.stdin.write('Y');
                     child_audio.stdin.end();
-                    //   	rl.question(data.toString(), function(answer) {
-                    //   		child_audio.stdin.write('' + answer);
-                    //   		child_audio.stdin.end();
-                    // 	console.log('input-> ' + answer);	
-                    // });
+
                 }
                 if (data.toString().match(/size=/ig)) {
                     var line = data.toString();

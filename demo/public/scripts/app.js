@@ -20,7 +20,14 @@ var pushtoRender = false;
 
 var video_container, image_container, audio_container;
 
+/**
+ * Represents a project.
+ * @constructor
+ */
 var project = {
+    /**
+     * Initializes the project. Checks for the suported formats
+     */
     init: function() {
         try {
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -69,6 +76,9 @@ var project = {
 
     formats: 'image/*,',
 
+    /**
+     * Sets the suported file formats.
+     */
     setSupportedFormats: function() {
         if (Modernizr.video['ogg']) {
             this.supportedVideoFormat.ogg = true;
@@ -118,116 +128,77 @@ var project = {
             "\nwave:" + this.supportedAudioFormat.wav);
     },
 
+    /**
+     * Sets the project id.
+     * @param {string} ID - The id of the project.
+     */
     setProjectID: function(ID) {
         if (typeof ID === 'string') {
             this.project_id = ID;
         }
     },
 
+    /**
+     * Return the project id.
+     * @returns {string}
+     */
     getProjectID: function() {
         return this.project_id;
     },
 
+    /**
+     * Sets the project name.
+     * @param {string} newName - The name of the project.
+     */
     setProjectName: function(newName) {
         if (typeof newName === 'string') {
             this.project_name = newName;
         }
     },
 
+    /**
+     * Return the project name.
+     * @returns {string}
+     */
     getProjectName: function() {
         return this.project_name;
     },
 
+    /**
+     * Sets the project resolution.
+     * @param {object} newResolution - The resolution of the project.
+     */
     setResolution: function(newResolution) {
         if (typeof newResolution === "object") {
             this.resolution = newResolution;
         }
     },
 
+    /**
+     * Return the project name.
+     * @returns {object}
+     */
     getResolution: function() {
         return this.resolution;
     },
 
-    addVideoFile: function(video_file) {
-        this.video_files.push(video_file);
-    },
-
-    addAudioFile: function(audio_file) {
-        this.audio_files.push(audio_file);
-    },
-
-    getVideoFiles: function() {
-        return this.video_files;
-    },
-
-    getAudioFiles: function() {
-        return this.audio_files;
-    },
-
-    /*showFileOptions: function(url, file_type) {
-        if (file_type === 'video') {
-            var video_element = document.createElement('video');
-            video_element.src = url;
-        }
-        if (file_type === 'audio') {
-            var audio_element = document.createElement('audio');
-            audio_element.src = url;
-        }
-        if (file_type === 'image') {
-            var image_element = document.creatElement('img');
-            image_element.src = url;
-        }
-    },
-
-    addToTimeline: function(file, type, idx) {
-        var newFile = file.cloneNode(true);
-        var span = document.createElement('span');
-        span.innerHTML = '<button onclick="project.removeFromTimeline(this.parentNode)">Remove</button><br />';
-
-        if (type === 'video') {
-            newFile.addEventListener('play', function() {
-                framenum = 0;
-                w = this.videoWidth;
-                h = this.videoHeight;
-                playVideo();
-            }, false);
-            newFile.addEventListener('play', function() {
-                console.log('play');
-            }, false);
-            newFile.addEventListener('pause', function() {
-                this.load();
-                console.log('pause');
-            }, false);
-        }
-        if (type === 'audio') {
-            span.innerHTML += '<button onclick="playAudio(document.getElementById(\'audio' + idx + '\'))">play</button>' +
-                '<button onclick="document.getElementById(\'audio' + idx + '\').pause()">pause</button><br />' +
-                '<button class="show" id="gainplusButton" name="gainplusButton" onclick="gainPlus()" disabled>gain +</button>' +
-                '<button class="show" id="gainminusButton" name="gainminusButton" onclick="gainMinus()" disabled>gain -</button><br />';
-            newFile.addEventListener('play', function() {
-                document.getElementById('gainplusButton').disabled = false;
-                document.getElementById('gainminusButton').disabled = false;
-            }, false);
-        }
-
-        span.appendChild(newFile);
-
-        document.getElementById('timeline').appendChild(span);
-    },
-
-    removeFromTimeline: function(element) {
-        source.disconnect(gainNode);
-        gainNode.disconnect(recorder);
-        recorder.disconnect(audio_context.destination);
-        document.getElementById('timeline').removeChild(element);
-    },*/
-
+    /**
+     * Adds the imageData information to the render array.
+     * @param {imageData} imageData - The imageData of a canvas.
+     */
     saveImageData: function(imageData) {
         this.renderImages.push(imageData);
     }
 
 };
 
+/**
+ * Represents a container for the audio object and functions.
+ * @constructor
+ * @param {HTML_Object} file - The audio element object.
+ * @param {string} url - The source url for the audio element.
+ * @param {Number} idx - The index of the object in the timeline.
+ */
 var AudioContainer = function(file, url, idx) {
     "use strict";
 
@@ -268,19 +239,11 @@ var AudioContainer = function(file, url, idx) {
 
     this.renderOver = false;
 
-    this.setStart = function(time) {
-        self.startTime = time;
-    };
-
-    this.setEnd = function(time) {
-        self.endTime = time;
-    };
-
-    // this.newAudioContext = function() {
-    //     this.audio_context = new AudioContext();
-    //     console.log('4 - ' + this.audio_context);
-    // };
-
+    /**
+     * Sets the start time for the audio.
+     * @param {Number} time - The time where to start the audio.
+     * @param {HTML_Element} file_element - The audio element.
+     */
     this.setStart = function(time, file_element) {
         console.log(time);
         notify("audio file start set to " + time, "information");
@@ -288,6 +251,11 @@ var AudioContainer = function(file, url, idx) {
         self.updateTime(file_element);
     };
 
+    /**
+     * Sets the end time for the audio.
+     * @param {Number} time - The time where to end the audio.
+     * @param {HTML_Element} file_element - The audio element.
+     */
     this.setEnd = function(time, file_element) {
         console.log(time);
         notify("audio file end set to " + time, "information");
@@ -295,6 +263,10 @@ var AudioContainer = function(file, url, idx) {
         self.updateTime(file_element);
     };
 
+    /**
+     * Updates the start and end time for the audio.
+     * @param {HTML_Element} file_element - The audio element.
+     */
     this.updateTime = function(file_element) {
         if (typeof self.endTime == 'undefined' || self.endTime > self.startTime || self.endTime == "") {
             console.log(self.originalurl + '#t=' + self.startTime + ',' + self.endTime);
@@ -302,6 +274,10 @@ var AudioContainer = function(file, url, idx) {
         }
     };
 
+    /**
+     * Plays or pauses the audio element.
+     * @param {HTML_Element} elem - The audio element.
+     */
     this.play = function(elem) {
         if (elem.paused) {
             self.playing = true;
@@ -331,6 +307,10 @@ var AudioContainer = function(file, url, idx) {
         }
     };
 
+    /**
+     * Stops the audio element while playing.
+     * @param {HTML_Element} elem - The audio element.
+     */
     this.stop = function(elem) {
         elem.pause();
         self.playing = false;
@@ -342,6 +322,9 @@ var AudioContainer = function(file, url, idx) {
         notify("audio stopped playing", "notification");
     };
 
+    /**
+     * Add or remove fade in/fade out effect of the audio.
+     */
     this.fadeSound = function() {
         var elem = document.getElementById("fade_audio" + idx);
         var inner = "fade in/out audio";
@@ -356,6 +339,9 @@ var AudioContainer = function(file, url, idx) {
         console.log("do fade in/out", self.fade);
     }
 
+    /**
+     * Mute and unmute the audio.
+     */
     this.mute = function() {
         var elem = document.getElementById("mute_audio" + idx);
         var inner = "mute";
@@ -370,22 +356,31 @@ var AudioContainer = function(file, url, idx) {
         elem.innerHTML = inner;
     };
 
+    /**
+     * Add a value of 0.1 to the audio gain value.
+     */
     this.gainPlus = function() {
         if (self.gainNode.gain.value <= 2) {
             self.gainNode.gain.value += .1;
         }
         console.log(self.gainNode.gain.value);
-        notify("audio volume set to " + self.gainNode.gain.value*100 + "%", "information");
+        notify("audio volume set to " + self.gainNode.gain.value * 100 + "%", "information");
     };
 
+    /**
+     * Remove a value of 0.1 to the audio gain value.
+     */
     this.gainMinus = function() {
         if (self.gainNode.gain.value >= 0) {
             self.gainNode.gain.value -= .1;
         }
         console.log(self.gainNode.gain.value);
-        notify("audio volume set to " + self.gainNode.gain.value*100 + "%", "information");
+        notify("audio volume set to " + self.gainNode.gain.value * 100 + "%", "information");
     };
 
+    /**
+     * Resets all variables used for the recording of the audio
+     */
     this.cleanForRecording = function() {
         self.leftchannel = [];
         self.rightchannel = [];
@@ -393,11 +388,18 @@ var AudioContainer = function(file, url, idx) {
         self.leftchannel.length = self.rightchannel.length = 0;
     };
 
+    /**
+     * Updates time the audio is playing in the web page.
+     * @param {Number} time - The time to update in page.
+     */
     this.updatePlayTime = function(time) {
         document.getElementById("audioTime" + idx).innerHTML = " <strong>Playing<strong> " + parseInt(time);
         document.getElementById("audioTimeEnd" + idx).innerHTML = parseInt(self.playingFile.duration);
     };
 
+    /**
+     * Add the audio element, settings and controls to the web page
+     */
     this.addToPage = function() {
         var newFile = self.audioFile.cloneNode(true);
         newFile.id = self.fileId;
@@ -414,7 +416,6 @@ var AudioContainer = function(file, url, idx) {
             console.log('pause');
         }, false);
         var span = document.createElement('span');
-        // span.innerHTML = '<button class='btn btn-default' onclick="document.getElementById(\'sound-timeline\').removeChild(this.parentNode)">Remove</button><br />';
         var controlPanel = "<div class='col-md-8 col-md-offset-2'><br />" +
             "<button class='btn btn-default' id=\"play_audio" + idx + "\" onclick='audio_container.cleanForRecording();audio_container.play(document.getElementById(\"" + self.fileId + "\"))'>play</button>" +
             "<button class='btn btn-default' onclick='audio_container.stop(document.getElementById(\"" + self.fileId + "\"))'>stop</button>" +
@@ -441,6 +442,10 @@ var AudioContainer = function(file, url, idx) {
         document.getElementById('sound-timeline').appendChild(span);
     };
 
+    /**
+     * Creates de AudioContext from the file and connects with nodes.
+     * @param {HTML_Element} file - The audio element.
+     */
     this.createAudioContext = function(file) {
         console.log('5 - ' + self.audio_context);
         self.recordingLength = 0;
@@ -465,6 +470,10 @@ var AudioContainer = function(file, url, idx) {
         var bufferSize = 2048;
         self.recorder = self.audio_context.createScriptProcessor(bufferSize, 2, 2);
 
+        /**
+         * Records and pushed the input audio to the output.
+         * @param {object} e - The audio object.
+         */
         self.recorder.onaudioprocess = function(e) {
             if (self.playing && !file.paused) {
                 console.log('recording');
@@ -513,6 +522,9 @@ var AudioContainer = function(file, url, idx) {
         self.recorder.connect(self.audio_context.destination);
     };
 
+    /**
+     * Draws the audio graph into a canvas.
+     */
     this.draw = function() {
         if (self.playing && !self.playingFile.paused) {
             self.updatePlayTime(self.playingFile.currentTime);
@@ -581,6 +593,11 @@ var AudioContainer = function(file, url, idx) {
 
 };
 
+/**
+ * Represents a container for the image object and functions.
+ * @constructor
+ * @param {Number} idx - The index of the object in the timeline.
+ */
 var ImageContainer = function(idx) {
     "use strict";
     var self = this;
@@ -597,17 +614,28 @@ var ImageContainer = function(idx) {
     this.frameTime = [];
     this.renderOver = false;
 
+    /**
+     * Sets the duration to show each image.
+     * @param {Number} duration - The duration to play a image.
+     */
     this.setDuration = function(duration) {
         self.duration = duration;
         notify("images duration set to " + duration, "information");
     };
 
+    /**
+     * Converts an object to a Image Elemnt and adds it to the image storage array.
+     * @param {object} image_file - The image file object.
+     */
     this.addImageFile = function(image_file) {
         var image_element = document.createElement('img');
         image_element.src = URL.createObjectURL(image_file);
         self.image_files.push(image_element);
     };
 
+    /**
+     * Draws each image from the image storage array into the canvas, for the duration that was set, making a slideshow.
+     */
     this.draw = function() {
         if (!self.paused) {
             var endTime = (new Date()).getTime() / 1000;
@@ -676,6 +704,9 @@ var ImageContainer = function(idx) {
         }
     };
 
+    /**
+     * Starts playing the images slideshow.
+     */
     this.play = function() {
         console.log("play images");
         self.paused = false;
@@ -686,6 +717,9 @@ var ImageContainer = function(idx) {
         self.draw();
     };
 
+    /**
+     * Stops playing the images slideshow.
+     */
     this.pause = function() {
         console.log("stop images");
         self.framenum = 0;
@@ -693,6 +727,9 @@ var ImageContainer = function(idx) {
         self.paused = true;
     };
 
+    /**
+     * Starts playing the images captured while playing the slideshow and saves them to the project.
+     */
     this.playForRender = function() {
         if (!self.paused) {
             var endTime = (new Date()).getTime() / 1000;
@@ -734,6 +771,9 @@ var ImageContainer = function(idx) {
         }
     };
 
+    /**
+     * Add the image element, settings and controls to the web page
+     */
     this.addToPage = function() {
         var span = document.createElement('span');
         var div = document.createElement('div');
@@ -821,10 +861,19 @@ var ImageContainer = function(idx) {
         document.getElementById('image-timeline').appendChild(span);
     };
 
+    /**
+     * Returns the array of filters that were applied
+     * @returns {Array}
+     */
     this.getAppliedFilters = function() {
         return self.appliedFilters;
     };
 
+    /**
+     * Add the filter to the apply queue
+     * @param {function} filter - A function for the applied filter.
+     * @param {string} option - The selected filter name.
+     */
     this.applyFilter = function(filter, option) {
         console.log(filter);
         self.appliedFilters.push(filter);
@@ -832,11 +881,18 @@ var ImageContainer = function(idx) {
         self.updateAppliedFilters();
     };
 
+    /**
+     * Removes the filter from the applied array.
+     * @param {Number} index - The index to remove the filter.
+     */
     this.removeAppliedFilter = function(index) {
         self.appliedFilters.splice(index);
         self.appliedFiltersName.splice(index);
     };
 
+    /**
+     * Updades the applied filters and adds them to the web page.
+     */
     this.updateAppliedFilters = function() {
         var element = document.getElementById('image_applied_filters');
         var filters = self.getAppliedFilters();
@@ -850,6 +906,14 @@ var ImageContainer = function(idx) {
     }
 };
 
+/**
+ * Represents a container for the video object and functions.
+ * @constructor
+ * @param {HTML_Object} file - The audio element object.
+ * @param {Number} idx - The index of the object in the timeline.
+ * @param {string} url - The source url for the audio element.
+ * @param {boolean} muted - If the audio must be or not muted.
+ */
 var VideoContainer = function(file, idx, url, muted) {
     "use strict";
 
@@ -883,14 +947,25 @@ var VideoContainer = function(file, idx, url, muted) {
 
     this.renderOver = false;
 
+    /**
+     * Sets the start time the video started to play.
+     */
     this.setInitTime = function() {
         self.initTime = (new Date()).getTime() / 1000;
     };
 
+    /**
+     * Resets the start time the video started to 0.
+     */
     this.resetInitTime = function() {
         self.initTime = 0;
     };
 
+    /**
+     * Sets the start time for the video.
+     * @param {Number} time - The time to start the video.
+     * @param {HTML_Element} file_element - The video element.
+     */
     this.setStart = function(time, file_element) {
         console.log(time);
         notify("video file start set to " + time, "information");
@@ -898,6 +973,11 @@ var VideoContainer = function(file, idx, url, muted) {
         self.updateTime(file_element);
     };
 
+    /**
+     * Sets the end time for the video.
+     * @param {Number} time - The time to end the video.
+     * @param {HTML_Element} file_element - The video element.
+     */
     this.setEnd = function(time, file_element) {
         console.log(time);
         notify("video file end set to " + time, "information");
@@ -905,6 +985,10 @@ var VideoContainer = function(file, idx, url, muted) {
         self.updateTime(file_element);
     };
 
+    /**
+     * Updates the duration for the video.
+     * @param {HTML_Element} file_element - The video element.
+     */
     this.updateTime = function(file_element) {
         if (typeof self.endTime == 'undefined' || self.endTime > self.startTime || self.endTime == "") {
             console.log(self.originalurl + '#t=' + self.startTime + ',' + self.endTime);
@@ -913,10 +997,19 @@ var VideoContainer = function(file, idx, url, muted) {
         }
     };
 
+    /**
+     * Returns the array of filters that were applied
+     * @returns {Array}
+     */
     this.getAppliedFilters = function() {
         return self.appliedFilters;
     };
 
+    /**
+     * Add the filter to the apply queue
+     * @param {function} filter - A function for the applied filter.
+     * @param {string} option - The selected filter name.
+     */
     this.applyFilter = function(filter, option) {
         console.log(filter);
         self.appliedFilters.push(filter);
@@ -924,11 +1017,18 @@ var VideoContainer = function(file, idx, url, muted) {
         self.updateAppliedFilters();
     };
 
+    /**
+     * Removes the filter from the applied array.
+     * @param {Number} index - The index to remove the filter.
+     */
     this.removeAppliedFilter = function(index) {
         self.appliedFilters.splice(index);
         self.appliedFiltersName.splice(index);
     };
 
+    /**
+     * Updades the applied filters and adds them to the web page.
+     */
     this.updateAppliedFilters = function() {
         var element = document.getElementById('video_applied_filters');
         var filters = self.getAppliedFilters();
@@ -941,6 +1041,9 @@ var VideoContainer = function(file, idx, url, muted) {
         element.innerHTML = content;
     }
 
+    /**
+     * Add the video element, settings and controls to the web page
+     */
     this.addToPage = function() {
         var newFile = self.videoFile.cloneNode(true);
         newFile.id = self.fileId;
@@ -1002,6 +1105,9 @@ var VideoContainer = function(file, idx, url, muted) {
         document.getElementById('video-timeline').appendChild(div);
     };
 
+    /**
+     * Draws each frame from the video into the canvas.
+     */
     this.draw = function() {
         var video_frame = document.getElementById(self.fileId);
         if (video_frame.paused || video_frame.ended) {
@@ -1040,6 +1146,9 @@ var VideoContainer = function(file, idx, url, muted) {
         }, 1000 / 30);
     };
 
+    /**
+     * Starts playing the images captured while playing the video and saves them to the project.
+     */
     this.playForRender = function() {
         if (self.framenum < self.imagesFiles.length) {
             var canvas = document.getElementById('canvas');
@@ -1073,14 +1182,29 @@ var VideoContainer = function(file, idx, url, muted) {
     };
 };
 
+/**
+ * Sets the start time for the input element.
+ * @param {Number} idx - The index of the element in the project timeline.
+ * @param {string} element_idx - The id of the element in the web page.
+ */
 function setStartTime(idx, element_id) {
     project.timeline[idx].setStart(document.getElementById(element_id + "_startTime").value, document.getElementById(element_id));
 }
 
+/**
+ * Sets the end time for the input element.
+ * @param {Number} idx - The index of the element in the project timeline.
+ * @param {string} element_idx - The id of the element in the web page.
+ */
 function setEndTime(idx, element_id) {
     project.timeline[idx].setEnd(document.getElementById(element_id + "_endTime").value, document.getElementById(element_id));
 }
 
+/**
+ * Applys the filter the object in the input index in the timeline.
+ * @param {string} option - The select option value.
+ * @param {Number} idx - The index of the element in the project timeline.
+ */
 function applyFilter(option, idx) {
     var filter;
     if (option === 'color_gray') {
@@ -1094,8 +1218,11 @@ function applyFilter(option, idx) {
     project.timeline[idx].applyFilter(filter, option);
 }
 
+/**
+ * Request the server for a unique id and sets the project parameters.
+ * @param {HTML_Element} projectForm - The HTML form with filled parameters.
+ */
 function setProject(projectForm) {
-    //Uncomment to request id
     var request = new XMLHttpRequest();
     request.open("GET", "/getUniqueID", true);
     request.send();
@@ -1155,13 +1282,19 @@ function setProject(projectForm) {
     return false;
 }
 
+/**
+ * Opens the file explorer.
+ */
 function openFiles() {
     if (document.getElementById(buttonOpenFileID).getAttribute("class") !== "disabled")
         document.getElementById(inputOpenFileID).click();
 }
 
+/**
+ * List the selected files, creates the audio, video or image container and adds them to the web page.
+ * @param {object} filelist - The object containing the files.
+ */
 function listFiles(filelist) {
-    // var preview_filelist = "";
     var countVideo = 0,
         countImages = 0,
         countAudio = 0;
@@ -1171,12 +1304,10 @@ function listFiles(filelist) {
 
         if (file.type.match(/^video\//) && project.formats.match((file.type + '').replace(/\//g, "\\/")) && countVideo < maxVideoFiles && countImages == 0) {
             var url = URL.createObjectURL(file);
-            project.addVideoFile(url);
-            // preview_filelist += "<li onclick='alert(\"" + file.name + "\");'>" + file.name + "</li>";
             notify("file " + file.name + " added to project", "notification");
 
             var video_element = document.createElement('video');
-            video_element.src = url; //+ "#t=20,28";
+            video_element.src = url;
             video_element.controls = true;
 
             video_container = new VideoContainer(video_element, i, url, false);
@@ -1200,35 +1331,7 @@ function listFiles(filelist) {
 
             video_container.addToPage();
             countVideo += 1;
-            // video_element.loop = true;
-            // var video_index = project.getVideoFiles().length;
-
-            // var canvas = document.createElement('canvas');
-            // var context = canvas.getContext("2d");
-
-            // video_element.addEventListener('play', function() {
-            //     // var w = this.videoWidth;
-            //     // var h = this.videoHeight;
-            //     // canvas.width = w;
-            //     // canvas.height = h;
-            //     // draw(this, context, w, h, canvas);
-            //     // console.log('video was painted to canvas.');
-            //     console.log('play');
-            // }, false);
-
-            // video_element.addEventListener('pause', function() {
-            //     // this.play();
-            //     this.load();
-            //     console.log('pause');
-            // }, false);
-
-            // project.addVideoFile(video_element);
-            // preview_filelist += "<li onclick='project.addToTimeline(project.getVideoFiles()[" + video_index + "], \"video\", \"" + video_index + "\")'>" + file.name + "</li>";
-            // /*video_element.controls = true;
-            // document.getElementById(previewID).appendChild(video_element);*/
         } else if (file.type.match(/^image\//) && countVideo == 0) {
-            //project.addImageFile(URL.createObjectURL(file));
-            // preview_filelist += "<li onclick='alert(\"" + file.name + "\");'>" + file.name + "</li>";
             notify("file " + file.name + " added to project", "notification");
             countImages += 1;
             if (countImages == 1) {
@@ -1236,15 +1339,7 @@ function listFiles(filelist) {
                 project.timeline.push(image_container);
             }
             image_container.addImageFile(file);
-            // var image_element = document.createElement('img');
-            // image_element.src = URL.createObjectURL(file);
-            // var image_index = project.getImageFiles().length;
-            // project.addImageFile(image_element);
-            // preview_filelist += "<li onclick='project.addToTimeline(project.getImageFiles()[" + image_index + "], \"image\", \"" + image_index + "\")'>" + file.name + "</li>";
-            // /*document.getElementById(previewID).appendChild(image_element);*/
         } else if (file.type.match(/^audio\//) && project.formats.match((file.type + '').replace(/\//g, "\\/")) && countAudio < maxAudioFiles) {
-            project.addAudioFile(URL.createObjectURL(file));
-            // preview_filelist += "<li onclick='alert(\"" + file.name + "\");'>" + file.name + "</li>";
             notify("file " + file.name + " added to project", "notification");
             countAudio += 1;
             if (countVideo == 1) {
@@ -1265,16 +1360,6 @@ function listFiles(filelist) {
                 audio_container.ext = file.type.split('/')[1];
                 console.log(audio_container)
             }
-            // var audio_index = project.getAudioFiles().length;
-            // audio_element.id = "audio" + audio_index;
-            // audio_element.controls = true;
-            // project.addAudioFile(audio_element);
-            // // var audioT = new AudioContainer(audio_element, url);
-            // // audioT.newAudioContext();
-            // // audioT.createAudioContext();
-            // preview_filelist += "<li onclick='project.addToTimeline(project.getAudioFiles()[" + audio_index + "], \"audio\", \"" + audio_index + "\")'>" + file.name + "</li>";
-            // /*audio_element.controls = true;
-            // document.getElementById(previewID).appendChild(audio_element);*/
         } else {
             swal("Warning!", "The selected file: " + file.name + ", with type: " + file.type + " isn't valid.", "warning");
         }
@@ -1287,107 +1372,15 @@ function listFiles(filelist) {
         audio_container.addToPage();
     }
 
-    // document.getElementById(previewID).innerHTML += preview_filelist;
-
-    console.log(project.getVideoFiles());
     console.log(image_container != null ? image_container.image_files : null);
-    console.log(project.getAudioFiles());
     console.log(project.timeline);
 }
 
-/*function draw(video_frame, canvas_ctx, width, height, canvas) {
-    //TODO meter a passar o video frame a frame
-    if (video_frame.paused || video_frame.ended) {
-        //console.log(project.imagesFiles);
-        console.log("done");
-        framenum = 0;
-        w = width;
-        h = height;
-        playVideo();
-        return false;
-    }
-    canvas_ctx.drawImage(video_frame, 0, 0, width, height);
-    project.saveImageData(canvas_ctx.getImageData(0, 0, width, height));
-    console.log('Duration:', video_frame.duration, ' Current:', video_frame.currentTime, ' Frame:', project.imagesFiles.length);
-    setTimeout(draw, 1000 / 60., video_frame, canvas_ctx, width, height, canvas);
-}*/
-
-// function playVideo() {
-//     if (framenum < project.imagesFiles.length) {
-//         var canvas = document.getElementById('canvas');
-//         canvas.width = w;
-//         canvas.height = h;
-//         var ctx = canvas.getContext('2d');
-//         ctx.putImageData(project.imagesFiles[framenum], 0, 0);
-//         framenum += 1;
-//         // setTimeout(playVideo, 1000/60., framenum, w, h); //este metodo nao funciona muito lag
-//         setTimeout(function() {
-//             window.requestAnimationFrame(playVideo);
-//         }, 1000 / 60); // não se encontra sincronizado com o video
-//     }
-// }
-
-/*function createAudioContext(file) {
-    recordingLength = 0;
-    leftchannel.length = rightchannel.length = 0;
-
-    source = audio_context.createMediaElementSource(file);
-
-    sampleRate = audio_context.sampleRate;
-
-
-    gainNode = audio_context.createGain();
-    source.connect(gainNode);
-    // gainNode.connect(audio_context.destination);
-
-    // analyser = audio_context.createAnalyser();
-    // analyser.fftSize = 2048;
-    // var bufferLength = analyser.frequencyBinCount;
-    // var dataArray = new Uint8Array(bufferLength);
-    // analyser.getByteTimeDomainData(dataArray);
-
-    var bufferSize = 2048;
-    recorder = audio_context.createScriptProcessor(bufferSize, 2, 2);
-
-    recorder.onaudioprocess = function(e) {
-        if (!document.getElementById('audio0').paused) {
-            console.log('recording');
-            var left = e.inputBuffer.getChannelData(0);
-            var right = e.inputBuffer.getChannelData(1);
-            // we clone the samples
-            leftchannel.push(new Float32Array(left));
-            rightchannel.push(new Float32Array(right));
-            recordingLength += bufferSize;
-            //inputToOutput(e);
-        } else {
-            //inputToOutput(e);
-        }
-    }
-
-    console.log(file, source, sampleRate, gainNode, analyser, recorder);
-
-    // gainNode.connect(recorder);
-    //analyser.connect(recorder);
-
-    gainNode.gain.value = 0;
-    gainNode.connect(audio_context.destination);
-}*/
-
-function inputToOutput(e, noSound) {
-    if (!noSound) {
-        for (var channel = 0; channel < e.outputBuffer.numberOfChannels; channel++) {
-            var inputData = e.inputBuffer.getChannelData(channel);
-            var outputData = e.outputBuffer.getChannelData(channel);
-
-            // Loop through the 4096 samples
-            for (var sample = 0; sample < e.inputBuffer.length; sample++) {
-                // make output equal to the same as the input
-                outputData[sample] = inputData[sample];
-            }
-        }
-    }
-}
-
+/**
+ * Combines the audio channels.
+ * @param {array} leftChannel - The left audio channel.
+ * @param {array} rightChannel - The right audio channel.
+ */
 function interleave(leftChannel, rightChannel) {
     var length = leftChannel.length + rightChannel.length;
     var result = new Float32Array(length);
@@ -1402,6 +1395,11 @@ function interleave(leftChannel, rightChannel) {
     return result;
 }
 
+/**
+ * Merges the audio channel buffer.
+ * @param {array} channelBuffer - The audio buffer.
+ * @param {Number} recordingLength - The length of the audio recording.
+ */
 function mergeBuffers(channelBuffer, recordingLength) {
     var result = new Float32Array(recordingLength);
     var offset = 0;
@@ -1414,6 +1412,12 @@ function mergeBuffers(channelBuffer, recordingLength) {
     return result;
 }
 
+/**
+ * Writes the WAV container.
+ * @param {DataView} view - A low-level interface for reading data from and writing it to an ArrayBuffer.
+ * @param {Number} offset - The offset.
+ * @param {string} string -  
+ */
 function writeUTFBytes(view, offset, string) {
     var lng = string.length;
     for (var i = 0; i < lng; i++) {
@@ -1421,6 +1425,10 @@ function writeUTFBytes(view, offset, string) {
     }
 }
 
+/**
+ * Gets the wave file blob.
+ * @returns {blob} 
+ */
 function getAudioBlob() {
     // we flat the left and right channels down
     var leftBuffer = mergeBuffers(audio_container.leftchannel, audio_container.recordingLength);
@@ -1467,6 +1475,9 @@ function getAudioBlob() {
     return blob;
 }
 
+/**
+ * Starts playing all the files.
+ */
 function playAll() {
     document.getElementById("renderButton").setAttribute("class", "");
     if (typeof image_container !== "undefined") {
@@ -1481,6 +1492,9 @@ function playAll() {
     }
 }
 
+/**
+ * Stops playing all the files.
+ */
 function stopAll() {
     if (typeof image_container !== "undefined") {
         image_container.pause();
@@ -1493,6 +1507,9 @@ function stopAll() {
     }
 }
 
+/**
+ * Starts the rendering process.
+ */
 function render() {
     console.log("rendering...");
     document.getElementById("uploadButton").setAttribute("class", "");
@@ -1525,6 +1542,10 @@ function render() {
         audioDuration += 2; //wait between render
     }
 
+    /**
+     * Waits a time until all the render process is done and calls for the upload function.
+     * @param {Number} timeToWait - The time to wait.
+     */
     function waitForRender(timeToWait) {
         console.log("waiting for the render to end in ", timeToWait, "milliseconds");
         setTimeout(function() {
@@ -1557,6 +1578,10 @@ function render() {
         }, timeToWait);
     }
 
+    /**
+     * Waits some time for the image rendering process to be done and starts rendering the audio.
+     * @param {Number} waitTime - The time to wait.
+     */
     function renderAudio(waitTime) {
         console.log("waiting to render audio in ", waitTime, "milliseconds");
         setTimeout(function() {
@@ -1622,6 +1647,9 @@ function render() {
     }
 }
 
+/**
+ * Starts the files upload process. Converting the imageData to blob and sends it via Ajax.
+ */
 function uploadFiles() {
     var done = false;
     var formData = new FormData();
@@ -1632,8 +1660,6 @@ function uploadFiles() {
     var canvasRender = document.getElementById('canvas');
     var res = project.getResolution();
 
-    // console.log(' position', posX, posY);
-
     formData.append('resolution', res.width + 'x' + res.height);
     canvasRender.width = res.width;
     canvasRender.height = res.height;
@@ -1642,7 +1668,10 @@ function uploadFiles() {
         var counter = 0;
         formData.append('totalImages', project.renderImages.length);
         notify("Uploading All Rendered Frames", "information");
-        //for (var i = 0; i < project.renderImages.length; i++) {
+
+        /**
+         * Draws the images into a canvas to convert it to a base64 string and then a blob to send to the server
+         */
         function drawImages() {
             if (counter < project.renderImages.length) {
                 var imageForm = new FormData();
@@ -1691,7 +1720,7 @@ function uploadFiles() {
 
     formData.append("webaudio", project.webAudioSuported);
 
-    if (typeof audio_container.audioFile !== "undefined" && project.webAudioSuported) { //project.getAudioFiles().length > 0) {
+    if (typeof audio_container.audioFile !== "undefined" && project.webAudioSuported) {
         var file = getAudioBlob();
         var fildname = filename = "audiofile";
         var ext = "wav";
@@ -1705,6 +1734,10 @@ function uploadFiles() {
         formData.append(fildname, audio_container.file, audio_container.filename + '.' + audio_container.ext);
     }
 
+    /**
+     * Waits until all images are upload and the uploads the audio file and the project settings.
+     * @param {Number} time - The time to wait.
+     */
     function upload(time) {
         console.log("waiting " + time + "(s) before uploading");
         setTimeout(function() {
@@ -1731,64 +1764,10 @@ function uploadFiles() {
     var timeToWait = (project.renderImages.length / 30);
     upload(timeToWait);
 }
-/*function gainPlus() {
-    var step = 1 / (60);
-    console.log(gainNode.gain.value);
-    gainNode.gain.cancelScheduledValues(audio_context.currentTime);
-    gainNode.gain.setTargetAtTime(1.0, audio_context.currentTime, 1);
-    // gainNode.gain.exponentialRampToValueAtTime(1.0, audio_context.currentTime+5);
-    console.log(gainNode.gain.value, audio_context.currentTime + 5);
 
-    // var timeout = setInterval( function() {
-    //     if(gainNode.gain.value < 1.0) {
-    //         step += step;
-    //         gainNode.gain.value = Math.pow(step, 2) > 1 ? 1 : Math.pow(step, 2);
-    //     } else {
-    //         clearInterval(timeout);
-    //     }
-    //     console.log(gainNode.gain.value, step); 
-    // }, 5000/60);
-}
-
-function gainMinus() {
-    var step = 1 / (60);
-    console.log(gainNode.gain.value);
-    gainNode.gain.cancelScheduledValues(audio_context.currentTime);
-    gainNode.gain.setTargetAtTime(0.0, audio_context.currentTime, 0.8);
-    // gainNode.gain.exponentialRampToValueAtTime(0.01, audio_context.currentTime+5);
-    console.log(gainNode.gain.value, audio_context.currentTime + 5);
-
-    // var timeout = setInterval( function() {
-    //     if(gainNode.gain.value > 0.0) {
-    //         step += step;
-    //         gainNode.gain.value -= Math.pow(step, 2) < 0 ? 0 : Math.pow(step, 2);
-    //     } else {
-    //         clearInterval(timeout);
-    //     }
-    //     console.log(gainNode.gain.value, step);
-    // }, 5000/60);
-}*/
-
-function hasContext(id) {
-    function checkContext(value) {
-        return value === id;
-    }
-    return audio_ids.filter(checkContext).length === 1 ? true : false;
-}
-
-function playAudio(element) {
-    if (element.paused) {
-        if (!hasContext(element.id)) {
-            createAudioContext(element);
-            audio_ids.push(element.id);
-            console.log('entrou')
-        }
-        gainNode.gain.cancelScheduledValues(audio_context.currentTime);
-        gainPlus();
-        element.play();;
-    }
-}
-
+/**
+ * Check if the user want to close the project
+ */
 function closeWindow() {
     swal({
         title: "Are you sure?",
@@ -1802,7 +1781,11 @@ function closeWindow() {
         window.close();
     });
 }
-
+/**
+ * Sends a notification to the web page.
+ * @param {string} text - The text for the notification.
+ * @param {string} type - The type of the notification.
+ */
 function notify(text, type) {
     var n = noty({
         text: text,
@@ -1823,6 +1806,9 @@ function notify(text, type) {
     });
 }
 
+/**
+ * If the user clicked the render and upload button check if the project was played at least once and warn the user.
+ */
 function checkIfCanRender() {
     var status = document.getElementById("renderButton").getAttribute("class");
     if (status == "disabled") {
@@ -1832,6 +1818,9 @@ function checkIfCanRender() {
     }
 }
 
+/**
+ * If the user clicked the upload button check if the project was rendered and warn the user.
+ */
 function checkIfCanUpload() {
     var status = document.getElementById("uploadButton").getAttribute("class");
     if (status == "disabled") {
